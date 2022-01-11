@@ -1,6 +1,6 @@
 package xyz.wagyourtail.jsmacros.client.api.sharedclasses;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.item.ItemRenderer;

@@ -1,7 +1,7 @@
 package xyz.wagyourtail.jsmacros.client.api.classes;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.util.math.Vec3d;
@@ -462,7 +462,7 @@ public class Draw3D {
         RenderSystem.lineWidth(2.5F);
         RenderSystem.disableTexture();
 
-        RenderSystem.pushMatrix();
+        GlStateManager.pushMatrix();
 
         Camera camera = mc.gameRenderer.getCamera();
         Vec3d camPos = camera.getPos();
@@ -477,7 +477,7 @@ public class Draw3D {
         //render
         synchronized (boxes) {
             for (Box b : boxes) {
-                b.render();
+                b.render(camPos);
             }
         }
 
@@ -605,7 +605,7 @@ public class Draw3D {
             this.fill = fill;
         }
 
-        public void render() {
+        public void render(Vec3d camPos) {
             final boolean cull = !this.cull;
             int a = (color >> 24) & 0xFF;
             int r = (color >> 16) & 0xFF;
@@ -633,7 +633,7 @@ public class Draw3D {
                 float fb = (fillColor & 0xFF) / 255F;
 
                 //1.15+ culls insides
-                RenderSystem.disableCull();
+                GlStateManager.disableCull();
 
                 buf.begin(GL11.GL_TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
 
