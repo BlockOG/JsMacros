@@ -183,8 +183,8 @@ public class FWorld extends BaseLibrary {
      */
     public List<PositionCommon.Pos3D> findBlocksMatching(String id, int chunkrange) {
         assert mc.player != null;
-        int playerChunkX = mc.player.getBlockX() >> 4;
-        int playerChunkZ = mc.player.getBlockZ() >> 4;
+        int playerChunkX = mc.player.getBlockPos().getX() >> 4;
+        int playerChunkZ = mc.player.getBlockPos().getZ() >> 4;
         return new WorldScanner(mc.world, block -> Registry.BLOCK.getId(block.getRaw()).toString().equals(id), null).scanChunkRange(playerChunkX, playerChunkZ, chunkrange);
     }
 
@@ -198,8 +198,8 @@ public class FWorld extends BaseLibrary {
      */
     public List<PositionCommon.Pos3D> findBlocksMatching(List<String> ids, int chunkrange) {
         assert mc.player != null;
-        int playerChunkX = mc.player.getBlockX() >> 4;
-        int playerChunkZ = mc.player.getBlockZ() >> 4;
+        int playerChunkX = (int) mc.player.getX() >> 4;
+        int playerChunkZ = (int) mc.player.getZ() >> 4;
         Set<String> ids2 = new HashSet<>(ids);
         return new WorldScanner(mc.world, block -> ids2.contains(Registry.BLOCK.getId(block.getRaw()).toString()), null).scanChunkRange(playerChunkX, playerChunkZ, chunkrange);
     }
@@ -231,8 +231,8 @@ public class FWorld extends BaseLibrary {
     public List<PositionCommon.Pos3D> findBlocksMatching(MethodWrapper<BlockHelper, Object, Boolean, ?> blockFilter, MethodWrapper<BlockStateHelper, Object, Boolean, ?> stateFilter, int chunkrange) {
         if (blockFilter == null) throw new IllegalArgumentException("idFilter cannot be null");
         assert mc.player != null;
-        int playerChunkX = mc.player.getBlockX() >> 4;
-        int playerChunkZ = mc.player.getBlockZ() >> 4;
+        int playerChunkX = mc.player.getBlockPos().getX() >> 4;
+        int playerChunkZ = mc.player.getBlockPos().getZ() >> 4;
         return findBlocksMatching(playerChunkX, playerChunkZ, blockFilter, stateFilter, chunkrange);
     }
 
@@ -270,7 +270,6 @@ public class FWorld extends BaseLibrary {
 
     private List<PositionCommon.Pos3D> findBlocksMatchingInternal(List<ChunkPos> pos, Function<Block, Boolean> stateFilter, Function<BlockState, Boolean> entityFilter) {
         assert mc.world != null;
-        int minY = mc.world.getDimension().getMinimumY();
 
         return pos.stream().flatMap(c -> {
             if (!mc.world.isChunkLoaded(c.x, c.z)) {
@@ -299,10 +298,10 @@ public class FWorld extends BaseLibrary {
                     if (stateFilter.apply(state.getBlock())) {
                         if (entityFilter != null) {
                             if (entityFilter.apply(state)) {
-                                return new PositionCommon.Pos3D(c.x << 4 | x, y + (i << 4) + minY, c.z << 4 | z);
+                                return new PositionCommon.Pos3D(c.x << 4 | x, y + (i << 4), c.z << 4 | z);
                             }
                         } else {
-                            return new PositionCommon.Pos3D(c.x << 4 | x, y + (i << 4) + minY, c.z << 4 | z);
+                            return new PositionCommon.Pos3D(c.x << 4 | x, y + (i << 4), c.z << 4 | z);
                         }
                     }
                     return null;
@@ -561,7 +560,7 @@ public class FWorld extends BaseLibrary {
      * @return text helper for the top part of the tab list (above the players)
      */
     public TextHelper getTabListHeader() {
-        Text header = ((IPlayerListHud)mc.inGameHud.getPlayerListHud()).jsmacros_getHeader();
+        Text header = ((IPlayerListHud)mc.inGameHud.getPlayerListWidget()).jsmacros_getHeader();
         if (header != null) return new TextHelper(header);
         return null;
     }
@@ -571,7 +570,7 @@ public class FWorld extends BaseLibrary {
      * @return  text helper for the bottom part of the tab list (below the players)
      */
     public TextHelper getTabListFooter() {
-        Text footer = ((IPlayerListHud)mc.inGameHud.getPlayerListHud()).jsmacros_getFooter();
+        Text footer = ((IPlayerListHud)mc.inGameHud.getPlayerListWidget()).jsmacros_getFooter();
         if (footer != null) return new TextHelper(footer);
         return null;
     }
