@@ -3,7 +3,7 @@ package xyz.wagyourtail.jsmacros.client.api.classes;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.collection.PackedIntegerArray;
+import net.minecraft.util.PackedIntegerArray;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.*;

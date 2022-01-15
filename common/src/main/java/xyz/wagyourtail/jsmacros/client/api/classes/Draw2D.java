@@ -71,7 +71,7 @@ public class Draw2D extends DrawableHelper implements IDraw2D<Draw2D> {
     public List<RenderCommon.Text> getTexts() {
         List<RenderCommon.Text> list = new LinkedList<>();
         synchronized (elements) {
-            for (Drawable e : elements) {
+            for (RenderCommon.RenderElement e : elements) {
                 if (e instanceof RenderCommon.Text) list.add((RenderCommon.Text) e);
             }
         }
@@ -86,7 +86,7 @@ public class Draw2D extends DrawableHelper implements IDraw2D<Draw2D> {
     public List<RenderCommon.Rect> getRects() {
         List<RenderCommon.Rect> list = new LinkedList<>();
         synchronized (elements) {
-            for (Drawable e : elements) {
+            for (RenderCommon.RenderElement e : elements) {
                 if (e instanceof RenderCommon.Rect) list.add((RenderCommon.Rect) e);
             }
         }
@@ -101,7 +101,7 @@ public class Draw2D extends DrawableHelper implements IDraw2D<Draw2D> {
     public List<RenderCommon.Item> getItems() {
         List<RenderCommon.Item> list = new LinkedList<>();
         synchronized (elements) {
-            for (Drawable e : elements) {
+            for (RenderCommon.RenderElement e : elements) {
                 if (e instanceof RenderCommon.Item) list.add((RenderCommon.Item) e);
             }
         }
@@ -116,7 +116,7 @@ public class Draw2D extends DrawableHelper implements IDraw2D<Draw2D> {
     public List<RenderCommon.Image> getImages() {
         List<RenderCommon.Image> list = new LinkedList<>();
         synchronized (elements) {
-            for (Drawable e : elements) {
+            for (RenderCommon.RenderElement e : elements) {
                 if (e instanceof RenderCommon.Image) list.add((RenderCommon.Image) e);
             }
         }
@@ -460,14 +460,12 @@ public class Draw2D extends DrawableHelper implements IDraw2D<Draw2D> {
     }
 
     @Override
-    public void render(MatrixStack matrixStack) {
-        if (matrixStack == null) return;
-        
+    public void render(MatrixStack matrix) {
         RenderSystem.pushMatrix();
         synchronized (elements) {
             Iterator<RenderCommon.RenderElement> iter = elements.stream().sorted(Comparator.comparingInt(RenderCommon.RenderElement::getZIndex)).iterator();
             while (iter.hasNext()) {
-                iter.next().render(matrixStack, 0, 0, 0);
+                iter.next().render(matrix, 0, 0, 0);
             }
         }
         RenderSystem.popMatrix();
