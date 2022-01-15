@@ -3,7 +3,7 @@ package xyz.wagyourtail.jsmacros.forge.client.forgeevents;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraftforge.client.event.RenderLevelLastEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.common.MinecraftForge;
@@ -31,11 +31,11 @@ public class ForgeEvents {
         }
     }
 
-    public static void renderWorldListener(RenderLevelLastEvent e) {
+    public static void renderWorldListener(RenderWorldLastEvent e) {
         client.getProfiler().swap("jsmacros_draw3d");
         for (Draw3D d : ImmutableSet.copyOf(FHud.renders)) {
             try {
-                d.render(e.getPoseStack());
+                d.render(e.getMatrixStack());
             } catch (Throwable t) {
                 t.printStackTrace();
             }
