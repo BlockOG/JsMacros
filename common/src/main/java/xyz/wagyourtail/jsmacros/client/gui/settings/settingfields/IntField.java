@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class IntField extends AbstractSettingField<Integer> {
     
-    public IntField(int x, int y, int width, TextRenderer textRenderer, AbstractSettingContainer parent, SettingsOverlay.SettingField<Integer> field) {
+    public IntField(int x, int y, int width, FontRenderer textRenderer, AbstractSettingContainer parent, SettingsOverlay.SettingField<Integer> field) {
         super(x, y, width, textRenderer.fontHeight + 2, textRenderer, parent, field);
     }
     
@@ -38,7 +38,7 @@ public class IntField extends AbstractSettingField<Integer> {
     @Override
     public void setPos(int x, int y, int width, int height) {
         super.setPos(x, y, width, height);
-        for (AbstractButtonWidget btn : buttons) {
+        for (GuiButton btn : buttons) {
             btn.y = y;
         }
     }

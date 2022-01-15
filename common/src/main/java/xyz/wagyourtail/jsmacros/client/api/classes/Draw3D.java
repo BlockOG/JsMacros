@@ -464,8 +464,9 @@ public class Draw3D {
 
         GlStateManager.pushMatrix();
 
-        Camera camera = mc.gameRenderer.getCamera();
-        Vec3d camPos = camera.getPos();
+        // offsetRender
+        RenderManager camera = mc.getEntityRenderManager();
+        PositionCommon.Pos3D camPos = new PositionCommon.Pos3D(camera.field_78730_l, camera.field_78731_m, camera.field_78728_n);
 
         // offsetRender
         //        matrixStack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(MathHelper.wrapDegrees(camera.getPitch())));
@@ -605,7 +606,7 @@ public class Draw3D {
             this.fill = fill;
         }
 
-        public void render(Vec3d camPos) {
+        public void render(PositionCommon.Pos3D camPos) {
             final boolean cull = !this.cull;
             int a = (color >> 24) & 0xFF;
             int r = (color >> 16) & 0xFF;
@@ -624,8 +625,8 @@ public class Draw3D {
             }
 
             Tessellator tess = Tessellator.getInstance();
-            BufferBuilder buf = tess.getBuffer();
-
+            WorldRenderer buf = tess.getBuffer();
+        
             if (this.fill) {
                 float fa = ((fillColor >> 24) & 0xFF) / 255F;
                 float fr = ((fillColor >> 16) & 0xFF) / 255F;

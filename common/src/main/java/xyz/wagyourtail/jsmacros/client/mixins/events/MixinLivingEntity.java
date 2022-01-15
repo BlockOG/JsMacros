@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.wagyourtail.jsmacros.client.api.event.impl.EventDamage;
 import xyz.wagyourtail.jsmacros.client.api.event.impl.EventEntityDamaged;
 
-@Mixin(LivingEntity.class)
+@Mixin(EntityLivingBase.class)
 public abstract class MixinLivingEntity {
 
     @Shadow public abstract float getMaximumHealth();

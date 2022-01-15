@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class DoubleField extends AbstractSettingField<Double> {
     
-    public DoubleField(int x, int y, int width, TextRenderer textRenderer, AbstractSettingContainer parent, SettingsOverlay.SettingField<Double> field) {
+    public DoubleField(int x, int y, int width, FontRenderer textRenderer, AbstractSettingContainer parent, SettingsOverlay.SettingField<Double> field) {
         super(x, y, width, textRenderer.fontHeight + 2, textRenderer, parent, field);
     }
     
@@ -38,7 +38,7 @@ public class DoubleField extends AbstractSettingField<Double> {
     @Override
     public void setPos(int x, int y, int width, int height) {
         super.setPos(x, y, width, height);
-        for (AbstractButtonWidget btn : buttons) {
+        for (GuiButton btn : buttons) {
             btn.y = y;
         }
     }

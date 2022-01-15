@@ -247,12 +247,12 @@ public class FWrapper extends PerExecLanguageLibrary<Context> implements IFWrapp
 
         @Override
         public boolean test(T t) {
-            return (boolean) apply(t, null);
+            return ((Boolean) apply(t, null)).booleanValue();
         }
 
         @Override
         public boolean test(T t, U u) {
-            return (boolean) apply(t, u);
+            return ((Boolean) apply(t, u)).booleanValue();
         }
 
         @Override
@@ -262,7 +262,7 @@ public class FWrapper extends PerExecLanguageLibrary<Context> implements IFWrapp
 
         @Override
         public int compare(T o1, T o2) {
-            return (int) apply(o1, (U) o2);
+            return ((Integer) apply(o1, (U) o2)).intValue();
         }
 
         @Override

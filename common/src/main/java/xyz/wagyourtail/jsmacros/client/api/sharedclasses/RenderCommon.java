@@ -12,6 +12,7 @@ import net.minecraft.util.registry.Registry;
 import org.lwjgl.opengl.GL11;
 import xyz.wagyourtail.jsmacros.client.api.helpers.ItemStackHelper;
 import xyz.wagyourtail.jsmacros.client.api.helpers.TextHelper;
+import xyz.wagyourtail.jsmacros.client.gui.elements.Drawable;
 
 /**
  * @author Wagyourtail
@@ -19,7 +20,7 @@ import xyz.wagyourtail.jsmacros.client.api.helpers.TextHelper;
  */
 @SuppressWarnings("unused")
 public class RenderCommon {
-    private static final MinecraftClient mc = MinecraftClient.getInstance();
+    private static final Minecraft mc = Minecraft.getInstance();
     
     public static interface RenderElement {
         int getZIndex();
@@ -137,7 +138,7 @@ public class RenderCommon {
          * @return
          */
         public Item setItem(String id, int count) {
-            net.minecraft.item.Item it = Registry.ITEM.get(new Identifier(id));
+            net.minecraft.item.Item it = net.minecraft.item.Item.REGISTRY.get(new ResourceLocation(id));
             this.item = new ItemStack(it, count);
             return this;
         }
@@ -158,8 +159,8 @@ public class RenderCommon {
             GlStateManager.rotatef(rotation, 0, 0, 1);
             GlStateManager.translated(-x, -y, 0);
             if (item != null) {
-                ItemRenderer i = mc.getItemRenderer();
-                i.renderGuiItemIcon(item,(int) (x / scale), (int) (y / scale));
+                RenderItem i = mc.getItemRenderer();
+                i.renderItem(item,(int) (x / scale), (int) (y / scale));
                 if (overlay) i.renderGuiItemOverlay(mc.textRenderer, item, (int) (x / scale), (int) (y / scale), ovText);
             }
             GlStateManager.popMatrix();
@@ -197,7 +198,7 @@ public class RenderCommon {
      * @since 1.2.3
      */
     public static class Image implements RenderElement {
-        private Identifier imageid;
+        private ResourceLocation imageid;
         public float rotation;
         public int x;
         public int y;
@@ -225,7 +226,7 @@ public class RenderCommon {
             this.regionHeight = regionHeight;
             this.textureWidth = textureWidth;
             this.textureHeight = textureHeight;
-            imageid = new Identifier(id);
+            imageid = new ResourceLocation(id);
             this.rotation = rotation;
         }
 
@@ -303,7 +304,7 @@ public class RenderCommon {
          * @param textureHeight
          */
         public void setImage(String id, int imageX, int imageY, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
-            imageid = new Identifier(id);
+            imageid = new ResourceLocation(id);
             this.imageX = imageX;
             this.imageY = imageY;
             this.regionWidth = regionWidth;
@@ -494,7 +495,7 @@ public class RenderCommon {
      * @since 1.0.5
      */
     public static class Text implements RenderElement {
-        public net.minecraft.text.Text text;
+        public IChatComponent text;
         public double scale;
         public float rotation;
         public int x;
@@ -505,7 +506,7 @@ public class RenderCommon {
         public int zIndex;
         
         public Text(String text, int x, int y, int color, int zIndex, boolean shadow, double scale, float rotation) {
-            this.text = new LiteralText(text);
+            this.text = new ChatComponentText(text);
             this.x = x;
             this.y = y;
             this.color = color;
@@ -568,7 +569,7 @@ public class RenderCommon {
          * @return
          */
         public Text setText(String text) {
-            this.text = new LiteralText(text);
+            this.text = new ChatComponentText(text);
             this.width = mc.textRenderer.getStringWidth(text);
             return this;
         }

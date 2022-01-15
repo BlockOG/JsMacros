@@ -165,7 +165,7 @@ public class FJsMacros extends PerExecLibrary {
      * @param path relative to the script's folder.
      */
     public void open(String path) {
-        Util.getOperatingSystem().open(ctx.getContainedFolder().toPath().resolve(path).toFile());
+        JsMacros.openURI("file:///" + ctx.getContainedFolder().toPath().resolve(path).toFile().getAbsolutePath());
     }
 
     /**
@@ -173,10 +173,9 @@ public class FJsMacros extends PerExecLibrary {
      *
      * @param url
      *
-     * @throws MalformedURLException
      */
-    public void openUrl(String url) throws MalformedURLException {
-        Util.getOperatingSystem().open(new URL(url));
+    public void openUrl(String url) {
+        JsMacros.openURI(url);
     }
     
     /**

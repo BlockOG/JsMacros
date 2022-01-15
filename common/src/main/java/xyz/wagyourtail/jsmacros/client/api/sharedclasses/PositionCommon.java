@@ -145,8 +145,8 @@ public class PositionCommon {
         public static final Pos3D ZERO = new Pos3D(0, 0, 0);
         public double z;
 
-        public Pos3D(Vec3d vec) {
-            this(vec.getX(), vec.getY(), vec.getZ());
+        public Pos3D(net.minecraft.util.Vec3 vec) {
+            this(vec.x, vec.y, vec.z);
         }
 
         public Pos3D(double x, double y, double z) {

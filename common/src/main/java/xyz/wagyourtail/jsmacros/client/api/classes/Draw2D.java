@@ -9,6 +9,7 @@ import xyz.wagyourtail.jsmacros.client.api.helpers.TextHelper;
 import xyz.wagyourtail.jsmacros.client.api.library.impl.FHud;
 import xyz.wagyourtail.jsmacros.client.api.sharedclasses.RenderCommon;
 import xyz.wagyourtail.jsmacros.client.api.sharedinterfaces.IDraw2D;
+import xyz.wagyourtail.jsmacros.client.gui.elements.Drawable;
 import xyz.wagyourtail.jsmacros.core.Core;
 import xyz.wagyourtail.jsmacros.core.MethodWrapper;
 
@@ -37,10 +38,12 @@ public class Draw2D extends DrawableHelper implements IDraw2D<Draw2D> {
      @Deprecated
     public MethodWrapper<String, Object, Object, ?> catchInit;
     
-    protected final MinecraftClient mc;
+    protected final Minecraft mc;
+    protected final ScaledResolution res;
     
     public Draw2D() {
-        this.mc = MinecraftClient.getInstance();
+        this.mc = Minecraft.getInstance();
+        this.res = new ScaledResolution(this.mc);
     }
     
     /**
@@ -49,7 +52,7 @@ public class Draw2D extends DrawableHelper implements IDraw2D<Draw2D> {
      */
     @Override
     public int getWidth() {
-        return mc.window.getScaledWidth();
+        return res.getWidth();
     }
 
     /**
@@ -58,7 +61,7 @@ public class Draw2D extends DrawableHelper implements IDraw2D<Draw2D> {
      */
     @Override
     public int getHeight() {
-        return mc.window.getScaledHeight();
+        return res.getHeight();
     }
 
     /**
