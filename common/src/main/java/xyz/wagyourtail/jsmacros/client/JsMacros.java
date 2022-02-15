@@ -22,6 +22,7 @@ import xyz.wagyourtail.wagyourgui.BaseScreen;
 
 import java.io.File;
 import java.util.Objects;
+import java.util.ServiceLoader;
 
 public class JsMacros {
     public static final String MOD_ID = "jsmacros";

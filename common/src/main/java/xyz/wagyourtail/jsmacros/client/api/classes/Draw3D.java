@@ -481,7 +481,7 @@ public class Draw3D {
         //render
         synchronized (boxes) {
             for (Box b : boxes) {
-                b.render();
+                b.render(matrixStack);
             }
         }
 
@@ -611,7 +611,7 @@ public class Draw3D {
             this.fill = fill;
         }
 
-        public void render() {
+        public void render(MatrixStack matrixStack) {
             final boolean cull = !this.cull;
             int a = (color >> 24) & 0xFF;
             int r = (color >> 16) & 0xFF;
@@ -631,7 +631,9 @@ public class Draw3D {
 
             Tessellator tess = Tessellator.getInstance();
             BufferBuilder buf = tess.getBuffer();
-            
+
+            Matrix4f matrix = matrixStack.peek().getModel();
+
             if (this.fill) {
                 float fa = ((fillColor >> 24) & 0xFF) / 255F;
                 float fr = ((fillColor >> 16) & 0xFF) / 255F;
@@ -644,65 +646,65 @@ public class Draw3D {
                 buf.begin(GL11.GL_TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
 
                 //draw a cube using triangle strips
-                buf.vertex(x1, y2, z2).color(fr, fg, fb, fa).next(); // Front-top-left
-                buf.vertex(x2, y2, z2).color(fr, fg, fb, fa).next(); // Front-top-right
-                buf.vertex(x1, y1, z2).color(fr, fg, fb, fa).next(); // Front-bottom-left
-                buf.vertex(x2, y1, z2).color(fr, fg, fb, fa).next(); // Front-bottom-right
-                buf.vertex(x2, y1, z1).color(fr, fg, fb, fa).next(); // Front-bottom-left
-                buf.vertex(x2, y2, z2).color(fr, fg, fb, fa).next(); // Front-top-right
-                buf.vertex(x2, y2, z1).color(fr, fg, fb, fa).next(); // Back-top-right
-                buf.vertex(x1, y2, z2).color(fr, fg, fb, fa).next(); // Front-top-left
-                buf.vertex(x1, y2, z1).color(fr, fg, fb, fa).next(); // Back-top-left
-                buf.vertex(x1, y1, z2).color(fr, fg, fb, fa).next(); // Front-bottom-left
-                buf.vertex(x1, y1, z1).color(fr, fg, fb, fa).next(); // Back-bottom-left
-                buf.vertex(x2, y1, z1).color(fr, fg, fb, fa).next(); // Back-bottom-right
-                buf.vertex(x1, y2, z1).color(fr, fg, fb, fa).next(); // Back-top-left
-                buf.vertex(x2, y2, z1).color(fr, fg, fb, fa).next(); // Back-top-right
+                buf.vertex(matrix, x1, y2, z2).color(fr, fg, fb, fa).next(); // Front-top-left
+                buf.vertex(matrix, x2, y2, z2).color(fr, fg, fb, fa).next(); // Front-top-right
+                buf.vertex(matrix, x1, y1, z2).color(fr, fg, fb, fa).next(); // Front-bottom-left
+                buf.vertex(matrix, x2, y1, z2).color(fr, fg, fb, fa).next(); // Front-bottom-right
+                buf.vertex(matrix, x2, y1, z1).color(fr, fg, fb, fa).next(); // Front-bottom-left
+                buf.vertex(matrix, x2, y2, z2).color(fr, fg, fb, fa).next(); // Front-top-right
+                buf.vertex(matrix, x2, y2, z1).color(fr, fg, fb, fa).next(); // Back-top-right
+                buf.vertex(matrix, x1, y2, z2).color(fr, fg, fb, fa).next(); // Front-top-left
+                buf.vertex(matrix, x1, y2, z1).color(fr, fg, fb, fa).next(); // Back-top-left
+                buf.vertex(matrix, x1, y1, z2).color(fr, fg, fb, fa).next(); // Front-bottom-left
+                buf.vertex(matrix, x1, y1, z1).color(fr, fg, fb, fa).next(); // Back-bottom-left
+                buf.vertex(matrix, x2, y1, z1).color(fr, fg, fb, fa).next(); // Back-bottom-right
+                buf.vertex(matrix, x1, y2, z1).color(fr, fg, fb, fa).next(); // Back-top-left
+                buf.vertex(matrix, x2, y2, z1).color(fr, fg, fb, fa).next(); // Back-top-right
 
                 tess.draw();
-                
+
                 RenderSystem.enableCull();
             }
 
             RenderSystem.lineWidth(2.5F);
-            buf.begin(GL11.GL_LINE_STRIP, VertexFormats.POSITION_COLOR);
+            buf.begin(GL11.GL_LINES, VertexFormats.POSITION_COLOR);
 
-            buf.vertex(x1, y1, z1).color(r, g, b, a).next();
-            buf.vertex(x1, y1, z2).color(r, g, b, a).next();
+            buf.vertex(matrix, x1, y1, z1).color(r, g, b, a).next();
+            buf.vertex(matrix, x1, y1, z2).color(r, g, b, a).next();
 
-            buf.vertex(x2, y1, z2).color(r, g, b, a).next();
+            buf.vertex(matrix, x2, y1, z2).color(r, g, b, a).next();
 
-            buf.vertex(x2, y1, z1).color(r, g, b, a).next();
+            buf.vertex(matrix, x2, y1, z1).color(r, g, b, a).next();
 
-            buf.vertex(x1, y1, z1).color(r, g, b, a).next();
+            buf.vertex(matrix, x1, y1, z1).color(r, g, b, a).next();
 
-            buf.vertex(x1, y2, z1).color(r, g, b, a).next();
+            buf.vertex(matrix, x1, y2, z1).color(r, g, b, a).next();
 
-            buf.vertex(x1, y2, z2).color(r, g, b, a).next();
+            buf.vertex(matrix, x1, y2, z2).color(r, g, b, a).next();
 
-            buf.vertex(x2, y2, z2).color(r, g, b, a).next();
+            buf.vertex(matrix, x2, y2, z2).color(r, g, b, a).next();
 
-            buf.vertex(x2, y2, z1).color(r, g, b, a).next();
+            buf.vertex(matrix, x2, y2, z1).color(r, g, b, a).next();
 
-            buf.vertex(x1, y2, z1).color(r, g, b, a).next();
+            buf.vertex(matrix, x1, y2, z1).color(r, g, b, a).next();
 
-            buf.vertex(x1, y2, z1).color(r, g, b, 0).next();
-            buf.vertex(x2, y1, z1).color(r, g, b, 0).next();
+            buf.vertex(matrix, x1, y2, z1).color(r, g, b, 0).next();
+            buf.vertex(matrix, x2, y1, z1).color(r, g, b, 0).next();
 
-            buf.vertex(x2, y1, z1).color(r, g, b, a).next();
-            buf.vertex(x2, y2, z1).color(r, g, b, a).next();
+            buf.vertex(matrix, x2, y1, z1).color(r, g, b, a).next();
+            buf.vertex(matrix, x2, y2, z1).color(r, g, b, a).next();
 
-            buf.vertex(x2, y2, z1).color(r, g, b, 0).next();
-            buf.vertex(x1, y1, z2).color(r, g, b, 0).next();
+            buf.vertex(matrix, x2, y2, z1).color(r, g, b, 0).next();
+            buf.vertex(matrix, x1, y1, z2).color(r, g, b, 0).next();
 
-            buf.vertex(x1, y1, z2).color(r, g, b, a).next();
-            buf.vertex(x1, y2, z2).color(r, g, b, a).next();
+            buf.vertex(matrix, x1, y1, z2).color(r, g, b, a).next();
+            buf.vertex(matrix, x1, y2, z2).color(r, g, b, a).next();
 
-            buf.vertex(x1, y2, z2).color(r, g, b, 0).next();
-            buf.vertex(x2, y1, z2).color(r, g, b, 0).next();
+            buf.vertex(matrix, x1, y2, z2).color(r, g, b, 0).next();
+            buf.vertex(matrix, x2, y1, z2).color(r, g, b, 0).next();
 
-            buf.vertex(x2, y1, z2).color(r, g, b, a).next();
-            buf.vertex(x2, y2, z2).color(r, g, b, a).next();
+            buf.vertex(matrix, x2, y1, z2).color(r, g, b, a).next();
+            buf.vertex(matrix, x2, y2, z2).color(r, g, b, a).next();
 
             tess.draw();
 

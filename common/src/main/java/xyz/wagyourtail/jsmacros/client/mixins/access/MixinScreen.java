@@ -80,7 +80,7 @@ public abstract class MixinScreen extends AbstractParentElement implements IScre
     public List<RenderCommon.Text> getTexts() {
         List<RenderCommon.Text> list = new LinkedList<>();
         synchronized (elements) {
-            for (Drawable e : elements) {
+            for (RenderCommon.RenderElement e : elements) {
                 if (e instanceof RenderCommon.Text) list.add((RenderCommon.Text) e);
             }
         }
@@ -91,7 +91,7 @@ public abstract class MixinScreen extends AbstractParentElement implements IScre
     public List<RenderCommon.Rect> getRects() {
         List<RenderCommon.Rect> list = new LinkedList<>();
         synchronized (elements) {
-            for (Drawable e : elements) {
+            for (RenderCommon.RenderElement e : elements) {
                 if (e instanceof RenderCommon.Rect) list.add((RenderCommon.Rect) e);
             }
         }
@@ -102,7 +102,7 @@ public abstract class MixinScreen extends AbstractParentElement implements IScre
     public List<RenderCommon.Item> getItems() {
         List<RenderCommon.Item> list = new LinkedList<>();
         synchronized (elements) {
-            for (Drawable e : elements) {
+            for (RenderCommon.RenderElement e : elements) {
                 if (e instanceof RenderCommon.Item) list.add((RenderCommon.Item) e);
             }
         }
@@ -113,7 +113,7 @@ public abstract class MixinScreen extends AbstractParentElement implements IScre
     public List<RenderCommon.Image> getImages() {
         List<RenderCommon.Image> list = new LinkedList<>();
         synchronized (elements) {
-            for (Drawable e : elements) {
+            for (RenderCommon.RenderElement e : elements) {
                 if (e instanceof RenderCommon.Image) list.add((RenderCommon.Image) e);
             }
         }
@@ -552,7 +552,7 @@ public abstract class MixinScreen extends AbstractParentElement implements IScre
         synchronized (elements) {
             Iterator<RenderCommon.RenderElement> iter = elements.stream().sorted(Comparator.comparingInt(RenderCommon.RenderElement::getZIndex)).iterator();
             while (iter.hasNext()) {
-                iter.next().render(mouseX, mouseY, delta);
+                iter.next().render(null, mouseX, mouseY, delta);
             }
         }
     }

@@ -461,14 +461,12 @@ public class Draw2D extends DrawableHelper implements IDraw2D<Draw2D> {
 
     @Override
     public void render(MatrixStack matrix) {
-        RenderSystem.pushMatrix();
         synchronized (elements) {
             Iterator<RenderCommon.RenderElement> iter = elements.stream().sorted(Comparator.comparingInt(RenderCommon.RenderElement::getZIndex)).iterator();
             while (iter.hasNext()) {
                 iter.next().render(matrix, 0, 0, 0);
             }
         }
-        RenderSystem.popMatrix();
     }
 
     /**
