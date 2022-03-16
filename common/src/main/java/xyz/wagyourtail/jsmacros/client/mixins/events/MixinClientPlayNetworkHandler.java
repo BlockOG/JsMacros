@@ -93,7 +93,7 @@ class MixinClientPlayNetworkHandler {
         }
     }
 
-    @Inject(at = @At("TAIL"), method = "onTitle")
+    @Inject(at = @At("RETURN"), method = "onTitle")
     public void onTitle(TitleS2CPacket packet, CallbackInfo info) {
         String type = null;
         switch(packet.getAction()) {
