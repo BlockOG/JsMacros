@@ -1,11 +1,8 @@
 package xyz.wagyourtail.jsmacros.client.api.classes;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.util.math.MatrixStack;
 import xyz.wagyourtail.jsmacros.client.api.helpers.ItemStackHelper;
 import xyz.wagyourtail.jsmacros.client.api.helpers.TextHelper;
 import xyz.wagyourtail.jsmacros.client.api.library.impl.FHud;
@@ -460,11 +457,11 @@ public class Draw2D extends DrawableHelper implements IDraw2D<Draw2D> {
     }
 
     @Override
-    public void render(MatrixStack matrix) {
+    public void render() {
         synchronized (elements) {
             Iterator<RenderCommon.RenderElement> iter = elements.stream().sorted(Comparator.comparingInt(RenderCommon.RenderElement::getZIndex)).iterator();
             while (iter.hasNext()) {
-                iter.next().render(matrix, 0, 0, 0);
+                iter.next().render(0, 0, 0);
             }
         }
     }

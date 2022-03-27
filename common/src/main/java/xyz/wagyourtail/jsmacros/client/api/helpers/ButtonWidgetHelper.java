@@ -1,11 +1,8 @@
 package xyz.wagyourtail.jsmacros.client.api.helpers;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
-import xyz.wagyourtail.jsmacros.client.JsMacros;
 import xyz.wagyourtail.jsmacros.client.api.sharedclasses.RenderCommon;
 import xyz.wagyourtail.jsmacros.core.Core;
 import xyz.wagyourtail.jsmacros.core.helpers.BaseHelper;
@@ -176,7 +173,7 @@ public class ButtonWidgetHelper<T extends AbstractButtonWidget> extends BaseHelp
     }
     
     @Override
-    public void render(MatrixStack stack, int mouseX, int mouseY, float delta) {
+    public void render(int mouseX, int mouseY, float delta) {
         base.render(mouseX, mouseY, delta);
     }
     

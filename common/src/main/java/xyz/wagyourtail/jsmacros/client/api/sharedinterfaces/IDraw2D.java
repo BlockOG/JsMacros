@@ -1,7 +1,5 @@
 package xyz.wagyourtail.jsmacros.client.api.sharedinterfaces;
 
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.util.math.MatrixStack;
 import xyz.wagyourtail.jsmacros.client.api.helpers.ItemStackHelper;
 import xyz.wagyourtail.jsmacros.client.api.helpers.TextHelper;
 import xyz.wagyourtail.jsmacros.client.api.sharedclasses.RenderCommon;
@@ -530,5 +528,5 @@ public interface IDraw2D<T> {
     /**
      * internal
      */
-    void render(MatrixStack stack);
+    void render();
 }

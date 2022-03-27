@@ -552,7 +552,7 @@ public abstract class MixinScreen extends AbstractParentElement implements IScre
         synchronized (elements) {
             Iterator<RenderCommon.RenderElement> iter = elements.stream().sorted(Comparator.comparingInt(RenderCommon.RenderElement::getZIndex)).iterator();
             while (iter.hasNext()) {
-                iter.next().render(null, mouseX, mouseY, delta);
+                iter.next().render(mouseX, mouseY, delta);
             }
         }
     }

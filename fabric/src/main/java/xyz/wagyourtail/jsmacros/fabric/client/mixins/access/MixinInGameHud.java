@@ -18,7 +18,7 @@ class MixinInGameHud {
         
         for (IDraw2D<Draw2D> h : ImmutableSet.copyOf(FHud.overlays)) {
             try {
-                h.render(null);
+                h.render();
             } catch (Throwable ignored) {}
         }
 
