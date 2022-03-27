@@ -1,22 +1,21 @@
 package xyz.wagyourtail.jsmacros.forge.client;
 
-import net.minecraftforge.fml.ExtensionPoint;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import xyz.wagyourtail.jsmacros.client.JsMacros;
 import xyz.wagyourtail.jsmacros.client.api.classes.CommandBuilder;
+import xyz.wagyourtail.jsmacros.client.api.event.impl.EventKey;
+import xyz.wagyourtail.jsmacros.client.api.library.impl.FKeyBind;
 import xyz.wagyourtail.jsmacros.forge.client.api.classes.CommandBuilderForge;
 import xyz.wagyourtail.jsmacros.forge.client.forgeevents.ForgeEvents;
+import xyz.wagyourtail.wagyourgui.BaseScreen;
 
-@Mod(JsMacros.MOD_ID)
+@Mod(modid = JsMacros.MOD_ID)
 public class JsMacrosForge {
 
     public JsMacrosForge() {
@@ -38,8 +37,12 @@ public class JsMacrosForge {
         FakeFabricLoader.instance.loadEntries();
     }
 
-    public void onInitializeClient(FMLClientSetupEvent event) {
+    public void onInitializeClient(FMLPostInitializationEvent event) {
         JsMacros.onInitializeClient();
+
+        // load fabric-style plugins
+        FakeFabricLoader.instance.loadClientEntries();
+    }
 
     @SubscribeEvent
     public void onMouse(InputEvent.MouseInputEvent mouseEvent) {

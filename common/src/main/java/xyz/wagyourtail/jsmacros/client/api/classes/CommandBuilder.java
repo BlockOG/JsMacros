@@ -1,23 +1,26 @@
 package xyz.wagyourtail.jsmacros.client.api.classes;
 
 import com.google.gson.JsonSyntaxException;
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.*;
-import com.mojang.brigadier.builder.ArgumentBuilder;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.BuiltInExceptions;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import net.minecraft.command.arguments.*;
-import net.minecraft.server.command.CommandSource;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import net.minecraft.block.Block;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.NumberInvalidException;
+import net.minecraft.item.Item;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.*;
+import org.jetbrains.annotations.Nullable;
 import xyz.wagyourtail.jsmacros.client.api.helpers.CommandContextHelper;
 import xyz.wagyourtail.jsmacros.client.api.helpers.SuggestionsBuilderHelper;
 import xyz.wagyourtail.jsmacros.client.config.EventLockWatchdog;
@@ -29,6 +32,10 @@ import xyz.wagyourtail.jsmacros.core.event.IEventListener;
 import xyz.wagyourtail.jsmacros.core.language.EventContainer;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -39,36 +46,27 @@ import java.util.stream.Collectors;
  * @since 1.4.2
  */
 @SuppressWarnings("unused")
-public class CommandBuilder {
-    private static final CommandDispatcher<ICommandSender> dispatcher = new CommandDispatcher<>();
+public abstract class CommandBuilder {
+
+    /**
+     * name -> builder
+     */
+    public static Function<String, CommandBuilder> createNewBuilder;
+
+
     private static final BuiltInExceptions exception = new BuiltInExceptions();
-    private final LiteralArgumentBuilder<ICommandSender> head;
-    private final Stack<ArgumentBuilder<ICommandSender, ?>> pointer = new Stack<>();
 
-    public CommandBuilder(String name) {
-        head = LiteralArgumentBuilder.literal(name);
-        pointer.push(head);
-    }
 
-    private void argument(String name, Supplier<ArgumentType<?>> type) {
-        ArgumentBuilder<ICommandSender, ?> arg = RequiredArgumentBuilder.argument(name, type.get());
+    protected abstract void argument(String name, Supplier<ArgumentType<?>> type);
 
-        pointer.push(arg);
-    }
-
-    public CommandBuilder literalArg(String name) {
-        ArgumentBuilder<ICommandSender, ?> arg = LiteralArgumentBuilder.literal(name);
-
-        pointer.push(arg);
-        return this;
-    }
+    public abstract CommandBuilder literalArg(String name);
 
     public CommandBuilder angleArg(String name) {
         throw new NullPointerException("does not exist in 1.16.1");
     }
 
     public CommandBuilder blockArg(String name) {
-        argument(name, BlockArgumentType::block);
+        argument(name, BlockArgumentType::new);
         return this;
     }
 
@@ -196,14 +194,7 @@ public class CommandBuilder {
      *
      * @return
      */
-    public CommandBuilder executes(MethodWrapper<CommandContextHelper, Object, Boolean, ?> callback) {
-        pointer.peek().executes((ctx) -> {
-            EventContainer<?> lock = new EventContainer<>(callback.getCtx());
-            EventLockWatchdog.startWatchdog(lock, new IEventListener() {
-                @Override
-                public EventContainer<?> trigger(BaseEvent event) {
-                    return null;
-                }
+    public abstract CommandBuilder executes(MethodWrapper<CommandContextHelper, Object, Boolean, ?> callback);
 
     protected abstract <S> void suggests(SuggestionProvider<S> suggestionProvider);
 
@@ -214,8 +205,31 @@ public class CommandBuilder {
      * @return
      */
     public CommandBuilder suggestMatching(String... suggestions) {
-        suggests((ctx, builder) -> CommandSource.suggestMatching(Arrays.asList(suggestions), builder));
+        suggests((ctx, builder) -> suggestMatching(Arrays.asList(suggestions), builder));
         return this;
+    }
+
+    static CompletableFuture<Suggestions> suggestMatching(Iterable<String> iterable, SuggestionsBuilder suggestionsBuilder) {
+        String string = suggestionsBuilder.getRemaining().toLowerCase(Locale.ROOT);
+
+        for(String string2 : iterable) {
+            if (method_27136(string, string2.toLowerCase(Locale.ROOT))) {
+                suggestionsBuilder.suggest(string2);
+            }
+        }
+
+        return suggestionsBuilder.buildFuture();
+    }
+
+    static boolean method_27136(String string, String string2) {
+        for(int i = 0; !string2.startsWith(string, i); ++i) {
+            i = string2.indexOf(95, i);
+            if (i < 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -225,8 +239,33 @@ public class CommandBuilder {
      * @return
      */
     public CommandBuilder suggestIdentifier(String... suggestions) {
-        suggests((ctx, builder) -> CommandSource.suggestIdentifiers(Arrays.stream(suggestions).map(Identifier::new), builder));
+        suggests((ctx, builder) -> suggestIdentifiers(Arrays.stream(suggestions).map(ResourceLocation::new)::iterator, builder));
         return this;
+    }
+
+
+    static CompletableFuture<Suggestions> suggestIdentifiers(Iterable<ResourceLocation> candidates, SuggestionsBuilder builder) {
+        String string = builder.getRemaining().toLowerCase(Locale.ROOT);
+        forEachMatching(candidates, string, identifier -> identifier, identifier -> builder.suggest(identifier.toString()));
+        return builder.buildFuture();
+    }
+
+    static <T> void forEachMatching(Iterable<T> candidates, String string, Function<T, ResourceLocation> identifier, Consumer<T> action) {
+        boolean bl = string.indexOf(58) > -1;
+
+        for(T object : candidates) {
+            ResourceLocation identifier2 = identifier.apply(object);
+            if (bl) {
+                String string2 = identifier2.toString();
+                if (method_27136(string, string2)) {
+                    action.accept(object);
+                }
+            } else if (method_27136(string, identifier2.getNamespace())
+                || identifier2.getNamespace().equals("minecraft") && method_27136(string, identifier2.getPath())) {
+                action.accept(object);
+            }
+        }
+
     }
 
     /**
@@ -250,20 +289,24 @@ public class CommandBuilder {
             public EventContainer<?> trigger(BaseEvent event) {
                 return null;
             }
-            lock.releaseLock();
-            return success ? 1 : 0;
-        });
-        return this;
-    }
 
-
-    public CommandBuilder or() {
-        if (pointer.size() > 1) {
-            ArgumentBuilder<ICommandSender, ?> oldarg = pointer.pop();
-            pointer.peek().then(oldarg);
+            @Override
+            public String toString() {
+                return "CommandBuilder{\"called_by\": " + callback.getCtx().getTriggeringEvent().toString() + "}";
+            }
+        }, Core.getInstance().config.getOptions(CoreConfigV2.class).maxLockTime);
+        boolean success = false;
+        try {
+            success = callback.apply(new CommandContextHelper(context));
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
-        return this;
+        lock.releaseLock();
+        return success ? 1 : 0;
     }
+
+
+    public abstract CommandBuilder or();
 
     /**
      * name overload for {@link #or()} to work around language keyword restrictions
@@ -275,14 +318,7 @@ public class CommandBuilder {
         return this;
     }
 
-    public CommandBuilder or(int argumentLevel) {
-        argumentLevel = Math.max(1, argumentLevel);
-        while (pointer.size() > argumentLevel) {
-            ArgumentBuilder<ICommandSender, ?> oldarg = pointer.pop();
-            pointer.peek().then(oldarg);
-        }
-        return this;
-    }
+    public abstract CommandBuilder or(int argumentLevel);
 
     /**
      * name overload for {@link #or(int)} to work around language keyword restrictions
@@ -295,63 +331,9 @@ public class CommandBuilder {
         return this;
     }
 
-    public void register() {
-        or(1);
-        LiteralCommandNode<ICommandSender> node = dispatcher.register(head);
-        ClientCommandHandler.instance.registerCommand(new ICommand() {
-            @Override
-            public String getCommandName() {
-                return node.getName();
-            }
+    public abstract void register();
 
-            @Override
-            public String getUsageTranslationKey(ICommandSender sender) {
-                return node.getUsageText();
-            }
-
-            @Override
-            public List<String> getAliases() {
-                return new ArrayList<>();
-            }
-
-            @Override
-            public void execute(ICommandSender sender, String[] args) throws CommandException {
-                try {
-                    dispatcher.execute(getCommandName() + (args.length > 0 ? " " + String.join(" ", args) : ""), sender);
-                } catch (CommandSyntaxException e) {
-                    throw new CommandException(e.getMessage());
-                }
-            }
-
-            @Override
-            public boolean isAccessible(ICommandSender sender) {
-                return true;
-            }
-
-            @Override
-            public List<String> getAutoCompleteHints(ICommandSender sender, String[] args, BlockPos pos) {
-                ParseResults<ICommandSender> pr = dispatcher.parse(getCommandName() + (args.length > 0 ? " " + String.join(" ", args) : ""), sender);
-                try {
-                    return dispatcher.getCompletionSuggestions(pr).get().getList().stream().map(Suggestion::getText).collect(Collectors.toList());
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                    throw new RuntimeException("error");
-                }
-            }
-
-            @Override
-            public boolean isUsernameAtIndex(String[] args, int index) {
-                return false;
-            }
-
-            @Override
-            public int compareTo(@NotNull ICommand o) {
-                return getCommandName().compareTo(o.getCommandName());
-            }
-        });
-    }
-
-    private static class RegexArgType implements ArgumentType<String[]> {
+    private class RegexArgType implements ArgumentType<String[]> {
 
         Pattern pattern;
 
@@ -376,7 +358,8 @@ public class CommandBuilder {
         }
     }
 
-    private static class BlockArgumentType implements ArgumentType<Block> {
+    private class BlockArgumentType implements ArgumentType<Block> {
+
 
 
         @Override
@@ -395,13 +378,9 @@ public class CommandBuilder {
                 return new Suggestions(null, sugs);
             });
         }
-
-        public static BlockArgumentType block() {
-            return new BlockArgumentType();
-        }
     }
 
-    public static class ColorArgumentType implements ArgumentType<EnumChatFormatting> {
+    public class ColorArgumentType implements ArgumentType<EnumChatFormatting> {
 
         @Override
         public EnumChatFormatting parse(StringReader reader) throws CommandSyntaxException {
@@ -422,7 +401,7 @@ public class CommandBuilder {
 
     }
 
-    public static class NBTArgumentType implements ArgumentType<NBTTagCompound> {
+    public class NBTArgumentType implements ArgumentType<NBTTagCompound> {
 
         @Override
         public NBTTagCompound parse(StringReader reader) throws CommandSyntaxException {
@@ -446,7 +425,7 @@ public class CommandBuilder {
         }
     }
 
-    public static class TextArgumentType implements ArgumentType<IChatComponent> {
+    public class TextArgumentType implements ArgumentType<IChatComponent> {
 
         @Override
         public IChatComponent parse(StringReader reader) throws CommandSyntaxException {
@@ -473,7 +452,7 @@ public class CommandBuilder {
         }
     }
 
-    public static class ItemArgumentType implements ArgumentType<Item> {
+    public class ItemArgumentType implements ArgumentType<Item> {
 
         @Override
         public Item parse(StringReader reader) throws CommandSyntaxException {
@@ -494,7 +473,7 @@ public class CommandBuilder {
 
     }
 
-    public static class IdentifierArgumentType implements ArgumentType<ResourceLocation> {
+    public class IdentifierArgumentType implements ArgumentType<ResourceLocation> {
 
         @Override
         public ResourceLocation parse(StringReader reader) throws CommandSyntaxException {

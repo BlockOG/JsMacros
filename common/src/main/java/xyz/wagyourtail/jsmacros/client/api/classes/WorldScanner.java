@@ -7,6 +7,7 @@ import net.minecraft.util.PackedIntegerArray;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.*;
+import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import xyz.wagyourtail.jsmacros.client.access.IChunkSection;
 import xyz.wagyourtail.jsmacros.client.access.IPackedIntegerArray;
 import xyz.wagyourtail.jsmacros.client.access.IPalettedContainer;
@@ -248,7 +249,7 @@ public class WorldScanner {
     }
     
     private void streamChunkSections(Chunk chunk, BiConsumer<ChunkSection, boolean[]> consumer) {
-        for (ChunkSection section : chunk.getSectionArray()) {
+        for (ExtendedBlockStorage section : chunk.getBlockStorage()) {
             if (section == null || section.isEmpty()) {
                 continue;
             }

@@ -267,7 +267,7 @@ public class FChat extends BaseLibrary {
      * @return
      */
     public CommandBuilder createCommandBuilder(String name) {
-        return new CommandBuilder(name);
+        return CommandBuilder.createNewBuilder.apply(name);
     }
 
     public ChatHistoryManager getHistory() {
