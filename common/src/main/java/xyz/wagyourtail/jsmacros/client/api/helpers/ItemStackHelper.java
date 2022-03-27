@@ -1,7 +1,8 @@
 package xyz.wagyourtail.jsmacros.client.api.helpers;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.client.Minecraft;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import xyz.wagyourtail.jsmacros.core.helpers.BaseHelper;
@@ -12,7 +13,7 @@ import xyz.wagyourtail.jsmacros.core.helpers.BaseHelper;
  */
 @SuppressWarnings("unused")
 public class ItemStackHelper extends BaseHelper<ItemStack> {
-    protected static final MinecraftClient mc = MinecraftClient.getInstance();
+    protected static final Minecraft mc = Minecraft.getInstance();
     
     public ItemStackHelper(ItemStack i) {
         super(i);
@@ -218,7 +219,7 @@ public class ItemStackHelper extends BaseHelper<ItemStack> {
      * @return
      */
     public boolean isOnCooldown() {
-        return MinecraftClient.getInstance().player.getItemCooldownManager().isCoolingDown(base.getItem());
+        return false;
     }
 
     /**
@@ -226,7 +227,7 @@ public class ItemStackHelper extends BaseHelper<ItemStack> {
      * @return
      */
     public float getCooldownProgress() {
-        return mc.player.getItemCooldownManager().getCooldownProgress(base.getItem(), mc.getTickDelta());
+        return 1f;
     }
 
     /**

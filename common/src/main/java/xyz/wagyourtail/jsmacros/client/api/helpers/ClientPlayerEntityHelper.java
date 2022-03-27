@@ -1,25 +1,21 @@
 package xyz.wagyourtail.jsmacros.client.api.helpers;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.options.KeyBinding;
-import net.minecraft.client.util.InputUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.Item;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import xyz.wagyourtail.jsmacros.client.access.IItemCooldownEntry;
 import xyz.wagyourtail.jsmacros.client.access.IItemCooldownManager;
 import xyz.wagyourtail.jsmacros.client.access.IMinecraftClient;
 import xyz.wagyourtail.jsmacros.client.api.sharedclasses.PositionCommon;
 import xyz.wagyourtail.jsmacros.core.Core;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.stream.Collectors;
@@ -376,9 +372,7 @@ public class ClientPlayerEntityHelper<T extends EntityPlayerSP> extends PlayerEn
      * @return
      */
     public Map<String, Integer> getItemCooldownsRemainingTicks() {
-        int tick = ((IItemCooldownManager) base.getItemCooldownManager()).getManagerTicks();
-        Map<Item, IItemCooldownEntry> map = ((IItemCooldownManager) base.getItemCooldownManager()).getCooldownItems();
-        return map.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName().getString(), e -> e.getValue().getEndTick() - tick));
+        return new HashMap<>();
     }
 
     /**
@@ -387,11 +381,7 @@ public class ClientPlayerEntityHelper<T extends EntityPlayerSP> extends PlayerEn
      * @return
      */
     public int getItemCooldownRemainingTicks(String item) {
-        int tick = ((IItemCooldownManager) base.getItemCooldownManager()).getManagerTicks();
-        Map<Item, IItemCooldownEntry> map = ((IItemCooldownManager) base.getItemCooldownManager()).getCooldownItems();
-        IItemCooldownEntry entry = map.get(Registry.ITEM.get(new Identifier(item)));
-        if (entry == null) return -1;
-        return entry.getEndTick() - tick;
+        return 0;
     }
 
     /**
@@ -399,9 +389,7 @@ public class ClientPlayerEntityHelper<T extends EntityPlayerSP> extends PlayerEn
      * @return
      */
     public Map<String, Integer>  getTicksSinceCooldownsStart() {
-        int tick = ((IItemCooldownManager) base.getItemCooldownManager()).getManagerTicks();
-        Map<Item, IItemCooldownEntry> map = ((IItemCooldownManager) base.getItemCooldownManager()).getCooldownItems();
-        return map.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName().getString(), e -> e.getValue().getStartTick() - tick));
+        return new HashMap<>();
     }
 
     /**
@@ -410,11 +398,7 @@ public class ClientPlayerEntityHelper<T extends EntityPlayerSP> extends PlayerEn
      * @return
      */
     public int getTicksSinceCooldownStart(String item) {
-        int tick = ((IItemCooldownManager) base.getItemCooldownManager()).getManagerTicks();
-        Map<Item, IItemCooldownEntry> map = ((IItemCooldownManager) base.getItemCooldownManager()).getCooldownItems();
-        IItemCooldownEntry entry = map.get(Registry.ITEM.get(new Identifier(item)));
-        if (entry == null) return -1;
-        return entry.getStartTick() - tick;
+        return -1;
     }
 
     /**

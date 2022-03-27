@@ -1,15 +1,14 @@
 package xyz.wagyourtail.jsmacros.client.api.classes;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import xyz.wagyourtail.jsmacros.client.api.helpers.ItemStackHelper;
 import xyz.wagyourtail.jsmacros.client.api.helpers.TextHelper;
 import xyz.wagyourtail.jsmacros.client.api.library.impl.FHud;
 import xyz.wagyourtail.jsmacros.client.api.sharedclasses.RenderCommon;
 import xyz.wagyourtail.jsmacros.client.api.sharedinterfaces.IDraw2D;
-import xyz.wagyourtail.jsmacros.client.gui.elements.Drawable;
 import xyz.wagyourtail.jsmacros.core.Core;
 import xyz.wagyourtail.jsmacros.core.MethodWrapper;
 
@@ -23,7 +22,7 @@ import java.util.*;
  * @see xyz.wagyourtail.jsmacros.client.api.sharedinterfaces.IDraw2D
  */
 @SuppressWarnings("deprecation")
-public class Draw2D extends DrawableHelper implements IDraw2D<Draw2D> {
+public class Draw2D implements IDraw2D<Draw2D> {
     protected final Set<RenderCommon.RenderElement> elements = new LinkedHashSet<>();
     /**
      * @since 1.0.5

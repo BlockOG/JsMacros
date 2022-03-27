@@ -1,14 +1,13 @@
 package xyz.wagyourtail.jsmacros.client.api.helpers;
 
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.Identifier;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.Util;
-import net.minecraft.util.registry.Registry;
 import xyz.wagyourtail.jsmacros.core.helpers.BaseHelper;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -27,7 +26,7 @@ public class BlockStateHelper extends BaseHelper<BlockState> {
      * @version 1.6.5
      */
     public Map<String, String> toMap() {
-        return base.getEntries().entrySet().stream().collect(Collectors.toMap(entry -> entry.getKey().getName(), entry -> Util.getValueAsString(entry.getKey(), entry.getValue())));
+        return base.getProperties().stream().collect(Collectors.toMap(IProperty::getName, entry -> Objects.toString(base.get(entry), "null")));
     }
 
     /**

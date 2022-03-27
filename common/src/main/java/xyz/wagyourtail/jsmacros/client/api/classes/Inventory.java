@@ -1,19 +1,14 @@
 package xyz.wagyourtail.jsmacros.client.api.classes;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.*;
-import net.minecraft.client.gui.screen.recipebook.RecipeBookResults;
-import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
-import net.minecraft.client.gui.screen.recipebook.RecipeResultCollection;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayerInteractionManager;
-import net.minecraft.container.CraftingContainer;
-import net.minecraft.container.Slot;
-import net.minecraft.container.SlotActionType;
-import net.minecraft.entity.passive.AbstractDonkeyEntity;
-import net.minecraft.entity.passive.HorseBaseEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.inventory.*;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ContainerChest;
 import net.minecraft.item.ItemStack;
 import xyz.wagyourtail.jsmacros.client.JsMacros;
 import xyz.wagyourtail.jsmacros.client.access.IHorseScreen;
@@ -42,7 +37,7 @@ public class Inventory<T extends GuiContainer> {
         Inventory<?> inv = create(mc.currentScreen);
         if (inv == null) {
             assert mc.player != null;
-            return new Inventory<>(new InventoryScreen(mc.player));
+            return new Inventory<>(new GuiInventory(mc.player));
         }
         return inv;
     }
