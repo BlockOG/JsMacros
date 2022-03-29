@@ -1,7 +1,7 @@
 package xyz.wagyourtail.jsmacros.client.api.helpers;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import xyz.wagyourtail.jsmacros.core.helpers.BaseHelper;
 
 /**
@@ -10,7 +10,7 @@ import xyz.wagyourtail.jsmacros.core.helpers.BaseHelper;
  */
 @SuppressWarnings("unused")
 public class BlockPosHelper extends BaseHelper<BlockPos> {
-    
+
     public BlockPosHelper(BlockPos b) {
         super(b);
     }
@@ -18,7 +18,7 @@ public class BlockPosHelper extends BaseHelper<BlockPos> {
     public BlockPosHelper(int x, int y, int z) {
         super(new BlockPos(x, y, z));
     }
-    
+
     /**
      * @since 1.2.6
      * @return the {@code x} value of the block.
@@ -26,7 +26,7 @@ public class BlockPosHelper extends BaseHelper<BlockPos> {
     public int getX() {
         return base.getX();
     }
-    
+
     /**
      * @since 1.2.6
      * @return the {@code y} value of the block.
@@ -34,7 +34,7 @@ public class BlockPosHelper extends BaseHelper<BlockPos> {
     public int getY() {
         return base.getY();
     }
-    
+
     /**
      * @since 1.2.6
      * @return the {@code z} value of the block.
@@ -164,7 +164,7 @@ public class BlockPosHelper extends BaseHelper<BlockPos> {
      * @since 1.6.5
      */
     public BlockPosHelper offset(String direction) {
-        return new BlockPosHelper(base.offset(Direction.byName(direction)));
+        return new BlockPosHelper(base.offset(EnumFacing.byName(direction)));
     }
 
     /**
@@ -175,9 +175,9 @@ public class BlockPosHelper extends BaseHelper<BlockPos> {
      * @since 1.6.5
      */
     public BlockPosHelper offset(String direction, int distance) {
-        return new BlockPosHelper(base.offset(Direction.byName(direction)));
+        return new BlockPosHelper(base.offset(EnumFacing.byName(direction)));
     }
-    
+
     @Override
     public String toString() {
         return String.format("BlockPosHelper:{\"x\": %d, \"y\": %d, \"z\": %d}", base.getX(), base.getY(), base.getZ());

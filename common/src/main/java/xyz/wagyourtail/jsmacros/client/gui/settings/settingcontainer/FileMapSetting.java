@@ -1,7 +1,7 @@
 package xyz.wagyourtail.jsmacros.client.gui.settings.settingcontainer;
 
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.text.LiteralText;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.util.ChatComponentText;
 import xyz.wagyourtail.jsmacros.client.gui.overlays.FileChooser;
 import xyz.wagyourtail.jsmacros.client.gui.settings.SettingsOverlay;
 import xyz.wagyourtail.jsmacros.client.gui.settings.settingfields.FileField;
@@ -11,12 +11,12 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 public class FileMapSetting extends AbstractMapSettingContainer<String, FileMapSetting.FileEntry> {
-    
+
     public FileMapSetting(int x, int y, int width, int height, FontRenderer textRenderer, SettingsOverlay parent, String[] group) {
         super(x, y, width, height, textRenderer, parent, group);
         defaultValue = () -> "./";
     }
-    
+
     @Override
     public void addField(String key, String value) {
         if (map.containsKey(key)) return;
@@ -30,13 +30,13 @@ public class FileMapSetting extends AbstractMapSettingContainer<String, FileMapS
             onScrollbar(0);
         }
     }
-    
+
     public static class FileEntry extends AbstractMapSettingContainer.MapSettingEntry<String> {
-    
+
         public FileEntry(int x, int y, int width, FontRenderer textRenderer, FileMapSetting parent, String key, String value) {
             super(x, y, width, textRenderer, (AbstractMapSettingContainer) parent, key, value);
         }
-    
+
         @Override
         public void init() {
             super.init();

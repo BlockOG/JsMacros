@@ -45,7 +45,7 @@ public class EventDropSlot implements BaseEvent {
     public Inventory<?> getInventory() {
         if (screen == null) {
             assert mc.player != null;
-            return Inventory.create(new InventoryScreen(mc.player));
+            return Inventory.create(new GuiInventory(mc.player));
         }
         return Inventory.create(screen);
     }

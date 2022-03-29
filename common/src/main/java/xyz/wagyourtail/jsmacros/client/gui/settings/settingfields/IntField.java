@@ -1,7 +1,7 @@
 package xyz.wagyourtail.jsmacros.client.gui.settings.settingfields;
 
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 import xyz.wagyourtail.jsmacros.client.gui.settings.SettingsOverlay;
 import xyz.wagyourtail.jsmacros.client.gui.settings.settingcontainer.AbstractSettingContainer;
 import xyz.wagyourtail.wagyourgui.BaseScreen;
@@ -10,11 +10,11 @@ import xyz.wagyourtail.wagyourgui.elements.TextInput;
 import java.lang.reflect.InvocationTargetException;
 
 public class IntField extends AbstractSettingField<Integer> {
-    
+
     public IntField(int x, int y, int width, FontRenderer textRenderer, AbstractSettingContainer parent, SettingsOverlay.SettingField<Integer> field) {
         super(x, y, width, textRenderer.fontHeight + 2, textRenderer, parent, field);
     }
-    
+
     @Override
     public void init() {
         super.init();
@@ -34,7 +34,7 @@ public class IntField extends AbstractSettingField<Integer> {
             throw new RuntimeException(e);
         }
     }
-    
+
     @Override
     public void setPos(int x, int y, int width, int height) {
         super.setPos(x, y, width, height);
@@ -42,10 +42,10 @@ public class IntField extends AbstractSettingField<Integer> {
             btn.y = y;
         }
     }
-    
+
     @Override
     public void render(int mouseX, int mouseY, float delta) {
         textRenderer.draw(BaseScreen.trimmed(textRenderer, settingName.asFormattedString(), width / 2), x, y + 1, 0xFFFFFF);
     }
-    
+
 }

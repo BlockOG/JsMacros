@@ -6,7 +6,7 @@
     "client": [
         "access.MixinBeaconScreen",
         "access.MixinChatHud",
-        "access.MixinChunkSelection",
+        "access.MixinExtendedBlockStorage",
         "access.MixinClientPlayNetworkHandler",
         "access.MixinEntity",
         "access.MixinGameRenderer",
@@ -17,8 +17,6 @@
         "access.MixinLocale",
         "access.MixinMerchantScreen",
         "access.MixinMinecraftClient",
-        "access.MixinPackedIntegerArray",
-        "access.MixinPalettedContainer",
         "access.MixinPlayerListHud",
         "access.MixinScreen",
         "access.MixinSignEditScreen",

@@ -1,8 +1,8 @@
 package xyz.wagyourtail.jsmacros.client.gui.settings.settingcontainer;
 
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import xyz.wagyourtail.jsmacros.client.gui.settings.SettingsOverlay;
 import xyz.wagyourtail.wagyourgui.elements.AnnotatedCheckBox;
 import xyz.wagyourtail.wagyourgui.overlays.TextPrompt;
@@ -10,12 +10,12 @@ import xyz.wagyourtail.wagyourgui.overlays.TextPrompt;
 import java.lang.reflect.InvocationTargetException;
 
 public class ColorMapSetting extends AbstractMapSettingContainer<short[], ColorMapSetting.ColorEntry> {
-    
+
     public ColorMapSetting(int x, int y, int width, int height, FontRenderer textRenderer, SettingsOverlay parent, String[] group) {
         super(x, y, width, height, textRenderer, parent, group);
         defaultValue = () -> new short[3];
     }
-    
+
     @Override
     public void addField(String key, short[] value) {
         if (map.containsKey(key)) return;
@@ -29,17 +29,17 @@ public class ColorMapSetting extends AbstractMapSettingContainer<short[], ColorM
             onScrollbar(0);
         }
     }
-    
+
     public static class ColorEntry extends AbstractMapSettingContainer.MapSettingEntry<short[]> {
-        
+
         public ColorEntry(int x, int y, int width, FontRenderer textRenderer, ColorMapSetting parent, String key, short[] value) {
             super(x, y, width, textRenderer, (AbstractMapSettingContainer) parent, key, value);
         }
-    
+
         public String convertColorToString(short[] color) {
             return String.format("#%02X%02X%02X", color[0], color[1], color[2]);
         }
-        
+
         public short[] convertStringToColor(String color) {
             short[] retVal = new short[3];
             long val = Long.parseLong(color.replace("#", ""), 16);
@@ -48,11 +48,11 @@ public class ColorMapSetting extends AbstractMapSettingContainer<short[], ColorM
             retVal[0] = (short) ((val >> 16) & 255);
             return retVal;
         }
-        
+
         public int convertColorToInt(short[] color) {
             return 0xFF000000 | (int) color[0] << 16 | (int) color[1] << 8 | color[2];
         }
-    
+
         @Override
         public void init() {
             super.init();
@@ -78,5 +78,5 @@ public class ColorMapSetting extends AbstractMapSettingContainer<short[], ColorM
             }));
         }
     }
-    
+
 }

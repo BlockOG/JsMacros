@@ -1,10 +1,10 @@
 package xyz.wagyourtail.jsmacros.client.gui.settings.settingcontainer;
 
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 import xyz.wagyourtail.jsmacros.client.gui.settings.SettingsOverlay;
 import xyz.wagyourtail.wagyourgui.BaseScreen;
 import xyz.wagyourtail.wagyourgui.containers.MultiElementContainer;
@@ -195,7 +195,7 @@ public abstract class AbstractMapSettingContainer<T, U extends AbstractMapSettin
 
         @Override
         public void render(int mouseX, int mouseY, float delta) {
-        
+
         }
     }
 }

@@ -1,6 +1,6 @@
 package xyz.wagyourtail.jsmacros.client.gui.settings.settingcontainer;
 
-import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.FontRenderer;
 import xyz.wagyourtail.jsmacros.client.gui.settings.SettingsOverlay;
 import xyz.wagyourtail.wagyourgui.containers.MultiElementContainer;
 import xyz.wagyourtail.wagyourgui.elements.Scrollbar;
@@ -13,7 +13,7 @@ public abstract class AbstractSettingContainer extends MultiElementContainer<Set
         this.group = group;
         init();
     }
-    
+
     public abstract void addSetting(SettingsOverlay.SettingField<?> setting);
-    
+
 }

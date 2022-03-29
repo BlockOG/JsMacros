@@ -1,9 +1,9 @@
 package xyz.wagyourtail.jsmacros.client.gui.settings.settingfields;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.text.LiteralText;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.util.ChatComponentText;
 import xyz.wagyourtail.jsmacros.client.gui.overlays.FileChooser;
 import xyz.wagyourtail.jsmacros.client.gui.settings.SettingsOverlay;
 import xyz.wagyourtail.jsmacros.client.gui.settings.settingcontainer.AbstractSettingContainer;
@@ -15,11 +15,11 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 public class FileField extends AbstractSettingField<String> {
-    
+
     public FileField(int x, int y, int width, FontRenderer textRenderer, AbstractSettingContainer parent, SettingsOverlay.SettingField<String> field) {
         super(x, y, width, textRenderer.fontHeight + 2, textRenderer, parent, field);
     }
-    
+
     public static File getTopLevel(SettingsOverlay.SettingField<?> setting) {
         for (String option : setting.option.type().options()) {
             if (option.startsWith("topLevel=")) {
@@ -67,7 +67,7 @@ public class FileField extends AbstractSettingField<String> {
             throw new RuntimeException(e);
         }
     }
-    
+
     @Override
     public void setPos(int x, int y, int width, int height) {
         super.setPos(x, y, width, height);
@@ -75,11 +75,11 @@ public class FileField extends AbstractSettingField<String> {
             btn.y = y;
         }
     }
-    
-    
+
+
     @Override
     public void render(int mouseX, int mouseY, float delta) {
         textRenderer.draw(BaseScreen.trimmed(textRenderer, settingName.asFormattedString(), width / 2), x, y + 1, 0xFFFFFF);
     }
-    
+
 }

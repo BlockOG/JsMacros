@@ -12,6 +12,7 @@ import xyz.wagyourtail.jsmacros.client.gui.screens.MacroScreen;
 import xyz.wagyourtail.jsmacros.core.Core;
 import xyz.wagyourtail.jsmacros.core.config.ScriptTrigger;
 import xyz.wagyourtail.jsmacros.core.language.TranslationUtil;
+import xyz.wagyourtail.wagyourgui.BaseScreen;
 import xyz.wagyourtail.wagyourgui.containers.MultiElementContainer;
 import xyz.wagyourtail.wagyourgui.elements.Button;
 

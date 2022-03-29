@@ -1,8 +1,8 @@
 package xyz.wagyourtail.jsmacros.client.api.helpers;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.world.GameMode;
+import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraft.world.WorldSettings;
 import xyz.wagyourtail.jsmacros.core.helpers.BaseHelper;
 
 /**
@@ -11,11 +11,11 @@ import xyz.wagyourtail.jsmacros.core.helpers.BaseHelper;
  */
 @SuppressWarnings("unused")
 public class PlayerListEntryHelper extends BaseHelper<NetworkPlayerInfo> {
-    
+
     public PlayerListEntryHelper(NetworkPlayerInfo p) {
         super(p);
     }
-    
+
     /**
      * @since 1.1.9
      * @return
@@ -25,7 +25,7 @@ public class PlayerListEntryHelper extends BaseHelper<NetworkPlayerInfo> {
         if (prof == null) return null;
         return prof.getId().toString();
     }
-    
+
     /**
      * @since 1.0.2
      * @return
@@ -49,7 +49,7 @@ public class PlayerListEntryHelper extends BaseHelper<NetworkPlayerInfo> {
      * @return null if unknown
      */
     public String getGamemode() {
-        GameMode gm = base.getGameMode();
+        WorldSettings.GameType gm = base.getGameMode();
         if (gm == null) return null;
         return gm.getName();
     }
@@ -61,7 +61,7 @@ public class PlayerListEntryHelper extends BaseHelper<NetworkPlayerInfo> {
     public TextHelper getDisplayText() {
         return new TextHelper(base.getDisplayName());
     }
-    
+
     public String toString() {
         return String.format("Player:{\"uuid\": \"%s\", \"name\":\"%s\"}", this.getUUID(), this.getName());
     }

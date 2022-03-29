@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.util.Util;
+import xyz.wagyourtail.jsmacros.client.JsMacros;
 import xyz.wagyourtail.jsmacros.core.Core;
 import xyz.wagyourtail.jsmacros.core.language.BaseLanguage;
 import xyz.wagyourtail.wagyourgui.elements.Button;
@@ -47,14 +47,14 @@ public class FileChooser extends OverlayContainer {
             this.removeButton(f.btn);
         }
         files.clear();
-        
+
         if (!dir.exists()) {
             if (!dir.mkdirs()) {
                 setDir(root);
                 return;
             }
         }
-        
+
         this.directory = dir;
         this.dirname = new ChatComponentText("./" + root.getAbsoluteFile().toPath().relativize(dir.getAbsoluteFile().toPath()).toString().replaceAll("\\\\", "/"));
 
@@ -213,7 +213,7 @@ public class FileChooser extends OverlayContainer {
         fill(x + 2, y + height - 15, x + width - 2, y + height - 14, 0xFFFFFFFF);
 //        textRenderer.draw(, mouseX, mouseY, color, shadow, matrix, vertexConsumers, seeThrough, backgroundColor, light)
         super.render(mouseX, mouseY, delta);
-        
+
         for (GuiButton b : ImmutableList.copyOf(this.buttons)) {
             if (b instanceof Button && ((Button) b).hovering && ((Button) b).cantRenderAllText()) {
                 // border
@@ -222,7 +222,7 @@ public class FileChooser extends OverlayContainer {
                 fill(mouseX+width+2, mouseY-textRenderer.fontHeight - 3, mouseX+width+3, mouseY, 0x7F7F7F7F);
                 fill(mouseX-3, mouseY-textRenderer.fontHeight - 3, mouseX-2, mouseY, 0x7F7F7F7F);
                 fill(mouseX-3, mouseY-textRenderer.fontHeight - 4, mouseX+width+3, mouseY-textRenderer.fontHeight - 3, 0x7F7F7F7F);
-                
+
                 // fill
                 fill(mouseX-2, mouseY-textRenderer.fontHeight - 3, mouseX+width+2, mouseY, 0xFF000000);
                 drawWithShadow(textRenderer, b.message, mouseX, mouseY-textRenderer.fontHeight - 1, 0xFFFFFF);

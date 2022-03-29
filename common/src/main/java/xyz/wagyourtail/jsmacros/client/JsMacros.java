@@ -17,6 +17,7 @@ import xyz.wagyourtail.jsmacros.core.Core;
 import xyz.wagyourtail.wagyourgui.BaseScreen;
 
 import java.io.File;
+import java.net.URI;
 import java.util.Objects;
 import java.util.ServiceLoader;
 
@@ -72,7 +73,7 @@ public class JsMacros {
             LOGGER.error("Couldn't open link", throwable);
         }
     }
-    
+
     static public String getScreenName(GuiScreen s) {
         if (s == null) return null;
         if (s instanceof GuiContainer) {
@@ -111,26 +112,26 @@ public class JsMacros {
         }
         return s.getClass().getTypeName();
     }
-    
+
     @Deprecated
     static public String getLocalizedName(int keyCode) {
         return GameSettings.getFormattedNameForKeyCode(keyCode);
     }
-    
+
     @Deprecated
     static public Minecraft getMinecraft() {
         return Minecraft.getInstance();
     }
-    
+
 
     public static int[] range(int end) {
         return range(0, end, 1);
     }
-    
+
     public static int[] range(int start, int end) {
         return range(start, end, 1);
     }
-    
+
     public static int[] range(int start, int end, int iter) {
         int[] a = new int[end-start];
         for (int i = start; i < end; i+=iter) {

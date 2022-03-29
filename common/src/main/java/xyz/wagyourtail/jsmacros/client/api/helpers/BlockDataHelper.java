@@ -18,48 +18,48 @@ public class BlockDataHelper extends BaseHelper<IBlockState> {
     private final Block b;
     private final BlockPos bp;
     private final TileEntity e;
-    
+
     public BlockDataHelper(IBlockState b, TileEntity e, BlockPos bp) {
         super(b);
         this.b = b.getBlock();
         this.bp = bp;
         this.e = e;
     }
-    
+
     /**
      * @since 1.1.7
-     * 
+     *
      * @return the {@code x} value of the block.
      */
     public int getX() {
         return bp.getX();
     }
-    
+
     /**
      * @since 1.1.7
-     * 
+     *
      * @return the {@code y} value of the block.
      */
     public int getY() {
         return bp.getY();
     }
-    
+
     /**
      * @since 1.1.7
-     * 
+     *
      * @return the {@code z} value of the block.
      */
     public int getZ() {
         return bp.getZ();
     }
-    
+
     /**
      * @return the item ID of the block.
      */
     public String getId() {
         return Block.REGISTRY.getIdentifier(b).toString();
     }
-    
+
     /**
      * @return the translated name of the block.
      */
@@ -93,10 +93,10 @@ public class BlockDataHelper extends BaseHelper<IBlockState> {
     public BlockHelper getBlockHelper() {
         return new BlockHelper(base.getBlock());
     }
-    
+
     /**
      * @since 1.1.7
-     * 
+     *
      * @return block state data as a {@link Map}.
      */
     public Map<String, String> getBlockState() {
@@ -107,28 +107,28 @@ public class BlockDataHelper extends BaseHelper<IBlockState> {
         }
         return map;
     }
-    
+
     /**
      * @since 1.2.7
-     * 
+     *
      * @return the block pos.
      */
     public BlockPosHelper getBlockPos() {
         return new BlockPosHelper(bp);
     }
-    
+
     public Block getRawBlock() {
         return b;
     }
-    
-    public BlockState getRawBlockState() {
+
+    public IBlockState getRawBlockState() {
         return base;
     }
-    
+
     public TileEntity getRawBlockEntity() {
         return e;
     }
-    
+
     @Override
     public String toString() {
         return String.format("BlockDataHelper:{\"x\":%d, \"y\":%d, \"z\":%d, \"id\":\"%s\"}", bp.getX(), bp.getY(), bp.getZ(), this.getId());
