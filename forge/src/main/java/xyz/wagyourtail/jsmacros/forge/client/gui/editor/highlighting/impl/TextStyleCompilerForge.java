@@ -16,11 +16,6 @@ public class TextStyleCompilerForge extends TextStyleCompiler {
 
     @Override
     protected void visitSyntax(@NotNull Prism4j.Syntax syntax) {
-        Optional<Integer> update = colorForSyntax(syntax.type(), syntax.alias());
-        ChatStyle newStyle = update.isPresent() ? ((IStyle)defaultStyle.copy()).jsmacros_setCustomColor(update.get()) : defaultStyle.copy();
-        final TextStyleCompiler child = new TextStyleCompilerForge(newStyle, themeData);
-        child.visit(syntax.children());
-        appendChildResult(child.getResult());
     }
 
 }

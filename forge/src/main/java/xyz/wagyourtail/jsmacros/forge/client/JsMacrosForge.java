@@ -37,17 +37,12 @@ public class JsMacrosForge {
         FakeFabricLoader.instance.loadEntries();
     }
 
+    @Mod.EventHandler
     public void onInitializeClient(FMLPostInitializationEvent event) {
         JsMacros.onInitializeClient();
 
         // load fabric-style plugins
         FakeFabricLoader.instance.loadClientEntries();
-    }
-
-    @SubscribeEvent
-    public void onMouse(InputEvent.MouseInputEvent mouseEvent) {
-        if (Mouse.getEventButtonState() ^ FKeyBind.pressedKeys.contains(Mouse.getEventButton() - 100))
-            new EventKey(Mouse.getEventButton() - 100, 0, Mouse.getEventButtonState() ? 1 : 0, BaseScreen.createModifiers());
     }
 
     public static class ShimClassLoader extends ClassLoader {
