@@ -64,7 +64,10 @@ public class WorldScanner {
     private void initializeFilter() {
         int stateCount = ((IObjectIntIdentityMap) Block.BLOCK_STATES).jsmacros_getSize();
         for (int i = 0; i < stateCount; i++) {
-            cachedFilterStates[i] = filter.apply(Block.BLOCK_STATES.fromId(i));
+            IBlockState state = Block.BLOCK_STATES.fromId(i);
+            if (state != null) {
+                cachedFilterStates[i] = filter.apply(state);
+            }
         }
     }
 
