@@ -34,7 +34,7 @@ public class DefaultCodeCompiler extends AbstractRenderCodeCompiler {
             compiledText = new ChatComponentText[] {new ChatComponentText("")};
         } else {
             final List<Prism4j.Node> nodes = Prism.getNodes(text, language);
-            final TextStyleCompiler visitor = TextStyleCompiler.getTextStyleCompiler.apply(
+            final TextStyleCompiler visitor = new TextStyleCompiler(
                 EditorScreen.defaultStyle,
                 themeData
             );

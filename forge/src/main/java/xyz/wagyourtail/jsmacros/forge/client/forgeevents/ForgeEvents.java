@@ -20,7 +20,7 @@ public class ForgeEvents {
     private static final Minecraft client = Minecraft.getInstance();
 
     public static void init() {
-        MinecraftForge.EVENT_BUS.register(ForgeEvents.class);
+        MinecraftForge.EVENT_BUS.register(new ForgeEvents());
     }
 
 //    public static void renderHudListener(ForgeIngameGui gui, MatrixStack mStack, float partialTicks, int width, int height) {
@@ -32,7 +32,7 @@ public class ForgeEvents {
 //    }
 
     @SubscribeEvent
-    public static void renderWorldListener(RenderWorldLastEvent e) {
+    public void renderWorldListener(RenderWorldLastEvent e) {
         client.profiler.swap("jsmacros_draw3d");
         for (Draw3D d : ImmutableSet.copyOf(FHud.renders)) {
             try {
@@ -44,20 +44,20 @@ public class ForgeEvents {
     }
 
     @SubscribeEvent
-    public static void onTick(TickEvent.ClientTickEvent event) {
+    public void onTick(TickEvent.ClientTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             TickBasedEvents.onTick(Minecraft.getInstance());
         }
     }
 
     @SubscribeEvent
-    public static void onKey(InputEvent.KeyInputEvent keyEvent) {
+    public void onKey(InputEvent.KeyInputEvent keyEvent) {
         if (Keyboard.getEventKeyState() ^ FKeyBind.pressedKeys.contains(Keyboard.getEventKey()))
             new EventKey(Keyboard.getEventKey(), 0, Keyboard.getEventKeyState() ? 1 : 0, BaseScreen.createModifiers());
     }
 
     @SubscribeEvent
-    public static void onMouse(InputEvent.MouseInputEvent mouseEvent) {
+    public void onMouse(InputEvent.MouseInputEvent mouseEvent) {
         if (Mouse.getEventButtonState() ^ FKeyBind.pressedKeys.contains(Mouse.getEventButton() - 100))
             new EventKey(Mouse.getEventButton() - 100, 0, Mouse.getEventButtonState() ? 1 : 0, BaseScreen.createModifiers());
     }
