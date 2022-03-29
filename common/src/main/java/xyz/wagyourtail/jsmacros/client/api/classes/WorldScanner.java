@@ -62,8 +62,10 @@ public class WorldScanner {
     }
 
     private void initializeFilter() {
-
-        //Java.type("net.minecraft.block.Block").BLOCK_STATES.jsmacros_getSize()
+        int stateCount = ((IObjectIntIdentityMap) Block.BLOCK_STATES).jsmacros_getSize();
+        for (int i = 0; i < stateCount; i++) {
+            cachedFilterStates[i] = filter.apply(Block.BLOCK_STATES.fromId(i));
+        }
     }
 
     /**
