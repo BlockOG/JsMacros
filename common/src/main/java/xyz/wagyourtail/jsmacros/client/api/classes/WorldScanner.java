@@ -64,7 +64,10 @@ public class WorldScanner {
     private void initializeFilter() {
         int stateCount = ((IObjectIntIdentityMap) Block.BLOCK_STATES).jsmacros_getSize();
         for (int i = 0; i < stateCount; i++) {
-            cachedFilterStates[i] = filter.apply(Block.BLOCK_STATES.fromId(i));
+            IBlockState state = Block.BLOCK_STATES.fromId(i);
+            if (state != null) {
+                cachedFilterStates[i] = filter.apply(state);
+            }
         }
     }
 
@@ -197,21 +200,6 @@ public class WorldScanner {
             }
         });
         return result;
-    }
-
-    private boolean getFilterResult(int id) {
-        return cachedFilterStates[id];
-    }
-
-    private boolean addCachedState(int id) {
-        boolean isInFilter = false;
-
-        if (filter != null) {
-            isInFilter = filter.apply(Block.BLOCK_STATES.fromId(id));
-        }
-
-        cachedFilterStates[id] = isInFilter;
-        return isInFilter;
     }
 
     private <V> Stream<V> getBestStream(List<V> list) {
