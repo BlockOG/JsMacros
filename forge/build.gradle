@@ -30,6 +30,8 @@ dependencies {
     include "com.neovisionaries:nv-websocket-client:2.10"
     include "org.javassist:javassist:3.28.0-GA"
 
+    include "com.mojang:brigadier:${project.brigadier_version}"
+
     common(project(path: ":common")) { transitive false }
     shadowCommon(project(path: ":common")) { transitive = false }
 }
