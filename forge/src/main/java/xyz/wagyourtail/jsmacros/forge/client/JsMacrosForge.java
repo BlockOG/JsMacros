@@ -15,7 +15,7 @@ import xyz.wagyourtail.jsmacros.forge.client.api.classes.CommandBuilderForge;
 import xyz.wagyourtail.jsmacros.forge.client.forgeevents.ForgeEvents;
 import xyz.wagyourtail.wagyourgui.BaseScreen;
 
-@Mod(modid = JsMacros.MOD_ID)
+@Mod(modid = JsMacros.MOD_ID, version = "@VERSION@", guiFactory = "xyz.wagyourtail.jsmacros.forge.client.JsMacrosModConfigFactory")
 public class JsMacrosForge {
 
     public JsMacrosForge() {

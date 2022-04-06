@@ -149,7 +149,9 @@ public abstract class BaseScreen extends GuiScreen implements IOverlayParent, IM
                 this.overlay.closeOverlay(this.overlay.getChildOverlay());
                 return true;
             }
-            return this.overlay.keyPressed(keyCode, scanCode, modifiers);
+            if (this.overlay.keyPressed(keyCode, scanCode, modifiers)) {
+                return true;
+            }
         }
         if (keyCode == Keyboard.KEY_ESCAPE) {
             this.onClose();

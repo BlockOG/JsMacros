@@ -4,8 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -16,7 +19,7 @@ public class JsMacrosJsonLangFile {
         URI uri = null;
         try {
             uri = JsMacrosJsonLangFile.class.getProtectionDomain().getCodeSource().getLocation().toURI();
-            File f = Paths.get(uri.toString().split("!")[0].replace("jar:file:", "")).toFile();
+            File f = new File(uri.toString().split("!")[0].replace("jar:", "").replace("file:", ""));
             try {
                 ZipFile zf = new ZipFile(f);
                 Enumeration<? extends ZipEntry> entries = zf.entries();
@@ -33,6 +36,25 @@ public class JsMacrosJsonLangFile {
                 }
             } catch (IOException e) {
                 System.err.println(f + " is not a valid zip file");
+                // attempt to load from dev env
+                if (f.getName().endsWith(".class")) {
+                    for (int i = 0; i < 8; i++) {
+                        f = f.getParentFile();
+                    }
+                    Path p = f.toPath().resolve("resources/main/assets/jsmacros/lang/");
+                    try {
+                        for (Path path : Files.list(p).collect(Collectors.toList())) {
+                            langResources.computeIfAbsent(
+                                path.getFileName().toString().replace(".json", "").toLowerCase(Locale.ROOT),
+                                (l) -> new HashSet<>()
+                            ).add(
+                                "/assets/jsmacros/lang/" + path.getFileName().toString()
+                            );
+                        }
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
                 e.printStackTrace();
             }
         } catch (IllegalArgumentException | URISyntaxException e) {

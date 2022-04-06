@@ -662,7 +662,7 @@ public class Draw3D {
             }
 
             GL11.glLineWidth(2.5F);
-            buf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+            buf.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
 
             buf.vertex(x1, y1, z1).color(r, g, b, a).next();
             buf.vertex(x1, y1, z2).color(r, g, b, a).next();

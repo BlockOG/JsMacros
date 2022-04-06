@@ -164,8 +164,9 @@ public class TextInput extends Button {
                     return true;
                 default:
             }
+            return charTyped(Keyboard.getEventCharacter(), keyCode);
         }
-        return charTyped(Keyboard.getEventCharacter(), keyCode);
+        return false;
     }
 
     public boolean charTyped(char chr, int keyCode) {
